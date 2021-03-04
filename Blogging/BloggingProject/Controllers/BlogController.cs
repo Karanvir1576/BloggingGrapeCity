@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using BloggingProject.Models;
+using Microsoft.EntityFrameworkCore;
 
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,7 +24,7 @@ namespace BloggingProject.Controllers
         }
         // GET: api/<BlogController>
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get()  //fetching all blogs
         {
             try
             {
@@ -42,6 +43,10 @@ namespace BloggingProject.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] Blog value)
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(value);
+            }
             try
             {
                 _context.Blogs.Add(value);
@@ -57,8 +62,9 @@ namespace BloggingProject.Controllers
         }
 
         // PUT api/<BlogController>/5
-        [HttpPut("{id}")]
-        public void Put(int id)
+        [HttpPut]
+        [Route("edit/{id}")]
+        public void Put(int id)     
         {
             try
             {
@@ -72,11 +78,13 @@ namespace BloggingProject.Controllers
         }
 
         // DELETE api/<BlogController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete]
+        [Route("delete/{id}")]
         public IActionResult Delete(int id)
         {
             try
             {
+                
                 var blog = _context.Blogs.Find(id);
                 if(blog!=null)
                 {
@@ -86,7 +94,7 @@ namespace BloggingProject.Controllers
                 }
                 return NotFound();
             }
-            catch
+            catch(Exception e)
             {
                 return StatusCode(500);
             }
