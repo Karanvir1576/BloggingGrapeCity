@@ -1,5 +1,5 @@
 # BloggingGrapeCity
-Blogging backend
+Blogging backend. Visual Studio 2019. Built on .Net 5
 
 -BlogTables.sql contains the database structure for the blogging application.
 
